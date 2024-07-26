@@ -192,9 +192,9 @@ def amend_permission() -> None:
 
 def download(dest_dir: str = None) -> None:
     """
-    Given the desired destination of the resulting `chromedriver` exexutable
-    (`dest_dir`), which defaults to the root of this project, this function
-    does the following:
+    Given the desired destination directory of the resulting `chromedriver`
+    exexutable (`dest_dir`), which defaults to the root of this project,
+    this function does the following:
 
     - Finds the current Chrome version - `get_chrome_version`
     - Gets the corresponding chromedriver download URL - `get_chromedriver_download_url`
