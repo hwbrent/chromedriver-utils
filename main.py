@@ -128,7 +128,7 @@ def get_chromedriver_download_url(our_version: str) -> str:
     return url
 
 
-def download_chromedriver(url: str, dest_dir: str = None) -> None:
+def download_chromedriver(url: str, dest_dir: str) -> None:
     """
     Given the download url for the specific chromedriver version, this
     function:
@@ -142,8 +142,7 @@ def download_chromedriver(url: str, dest_dir: str = None) -> None:
     """
     ### Download the .zip file ###
 
-    # Get the destination for the zip
-    dest_dir = dest_dir or os.path.dirname(__file__)
+    # Get the full path for the zip
     zip_name = "chromedriver.zip"
     zip_path = os.path.join(dest_dir, zip_name)
 
@@ -191,12 +190,25 @@ def amend_permission() -> None:
     os.chmod(path, stat.S_IRWXU)
 
 
-def main():
+def download(dest_dir: str = None) -> None:
+    """
+    Given the desired destination of the resulting `chromedriver` exexutable
+    (`dest_dir`), which defaults to the root of this project, this function
+    does the following:
+
+    - Finds the current Chrome version - `get_chrome_version`
+    - Gets the corresponding chromedriver download URL - `get_chromedriver_download_url`
+    - Downloads the data at the URL - `download_chromedriver`
+    - Amends the permissions so `chromedriver` can be used out-the-box - `amend_permission`
+    """
     version = get_chrome_version()
     url = get_chromedriver_download_url(version)
-    download_chromedriver(url)
+    download_chromedriver(
+        url,
+        dest_dir or os.path.dirname(__file__),
+    )
     amend_permission()
 
 
 if __name__ == "__main__":
-    main()
+    download()
