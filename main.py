@@ -128,21 +128,22 @@ def get_chromedriver_download_url(our_version: str) -> str:
     return url
 
 
-def download_chromedriver(url: str) -> None:
+def download_chromedriver(url: str, dest_dir: str = None) -> None:
     """
     Given the download url for the specific chromedriver version, this
     function:
     - Downloads the zip file
     - Unzips it
     - Moves the 'chromedriver' executable in the resulting directory to
-      the root of the project
+      the destination directory (optionally specified by param; defaults to
+      project root)
     - Removes the zip file and its resulting directory, including the
       LICENSE.chromedriver file within
     """
     ### Download the .zip file ###
 
-    # The root of the project
-    dest_dir = os.path.dirname(__file__)
+    # Get the destination for the zip
+    dest_dir = dest_dir or os.path.dirname(__file__)
     zip_name = "chromedriver.zip"
     zip_path = os.path.join(dest_dir, zip_name)
 
