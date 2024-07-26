@@ -128,10 +128,11 @@ def get_chromedriver_download_url(our_version: str) -> str:
     return url
 
 
-def download_chromedriver(url: str, dest_dir: str) -> None:
+def download_chromedriver(url: str, dest_dir: str) -> str:
     """
     Given the download url for the specific chromedriver version, this
     function:
+
     - Downloads the zip file
     - Unzips it
     - Moves the 'chromedriver' executable in the resulting directory to
@@ -139,6 +140,8 @@ def download_chromedriver(url: str, dest_dir: str) -> None:
       project root)
     - Removes the zip file and its resulting directory, including the
       LICENSE.chromedriver file within
+
+    And returns the filepath of the `chromedriver` executable
     """
     ### Download the .zip file ###
 
@@ -172,6 +175,8 @@ def download_chromedriver(url: str, dest_dir: str) -> None:
     os.remove(zip_path)
     shutil.rmtree(unzipped_dir)
 
+    return chromedriver_dest_path
+
 
 def amend_permission() -> None:
     """
@@ -190,7 +195,7 @@ def amend_permission() -> None:
     os.chmod(path, stat.S_IRWXU)
 
 
-def download(dest_dir: str = None) -> None:
+def download(dest_dir: str = None) -> str:
     """
     Given the desired destination directory of the resulting `chromedriver`
     exexutable (`dest_dir`), which defaults to the root of this project,
@@ -200,14 +205,18 @@ def download(dest_dir: str = None) -> None:
     - Gets the corresponding chromedriver download URL - `get_chromedriver_download_url`
     - Downloads the data at the URL - `download_chromedriver`
     - Amends the permissions so `chromedriver` can be used out-the-box - `amend_permission`
+
+    And returns the path of the downloaded `chromedriver` executable
     """
     version = get_chrome_version()
     url = get_chromedriver_download_url(version)
-    download_chromedriver(
+    filepath = download_chromedriver(
         url,
         dest_dir or os.path.dirname(__file__),
     )
     amend_permission()
+
+    return filepath
 
 
 if __name__ == "__main__":
