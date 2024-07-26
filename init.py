@@ -2,16 +2,17 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 
 
-def init() -> webdriver.Chrome:
+def init(chromedriver_path: str) -> webdriver.Chrome:
     """
-    Initialises and returns a selenium webdriver
+    Given the path of a `chromedriver` executable, this function initialises
+    a `WebDriver`, and returns it
     """
 
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")  # Run Chrome in headless mode (no GUI)
     options.add_argument("--disable-gpu")  # Disable GPU acceleration in headless mode
 
-    service = ChromeService(CHROMEDRIVER_PATH)
+    service = ChromeService(chromedriver_path)
     driver = webdriver.Chrome(options=options, service=service)
 
     return driver
