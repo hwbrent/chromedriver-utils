@@ -168,7 +168,9 @@ def download_chromedriver(url: str, dest_dir: str) -> str:
 
     ### Move 'chromedriver' to the root of the project ###
     chromedriver_src_path = os.path.join(unzipped_dir, "chromedriver")
-    chromedriver_dest_path = os.path.join(dest_dir, "chromedriver")
+    chromedriver_dest_path = os.path.abspath(
+        os.path.join(dest_dir, "chromedriver"),
+    )
     shutil.move(chromedriver_src_path, chromedriver_dest_path)
 
     ### Clean up .zip and the unzipped directory ###
