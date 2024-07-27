@@ -1,4 +1,5 @@
 import os
+import sys
 import xml.etree.ElementTree as ET
 from difflib import SequenceMatcher
 from zipfile import ZipFile
@@ -192,7 +193,7 @@ def amend_permission(dest_dir: str) -> None:
     os.chmod(path, stat.S_IRWXU)
 
 
-def download(dest_dir: str = None) -> str:
+def download(dest_dir: str) -> str:
     """
     Given the desired destination directory of the resulting `chromedriver`
     exexutable (`dest_dir`), which defaults to the root of this project,
@@ -205,8 +206,6 @@ def download(dest_dir: str = None) -> str:
 
     And returns the path of the downloaded `chromedriver` executable
     """
-    dest_dir = dest_dir or os.path.dirname(__file__)
-
     version = get_chrome_version()
     url = get_chromedriver_download_url(version)
     filepath = download_chromedriver(url, dest_dir)
@@ -215,5 +214,22 @@ def download(dest_dir: str = None) -> str:
     return filepath
 
 
+def main() -> None:
+    """
+    If this file is executed, this function is called; basically the whole
+    downloading process is carried out, and the chromedriver path is printed
+    """
+
+    # Check the arguments to this file; if one was provided, use that as
+    # the destination
+    # Else, use the cwd
+    args = sys.argv[1:]
+    dest_dir = os.getcwd() if len(args) == 0 else args[0]
+
+    # Do the downloading, and print the path
+    resulting_filepath = download(dest_dir)
+    print(resulting_filepath)
+
+
 if __name__ == "__main__":
-    download()
+    main()
