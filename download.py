@@ -136,8 +136,7 @@ def download_chromedriver(url: str, dest_dir: str) -> str:
     - Downloads the zip file
     - Unzips it
     - Moves the 'chromedriver' executable in the resulting directory to
-      the destination directory (optionally specified by param; defaults to
-      project root)
+      the destination directory `dest_dir`
     - Removes the zip file and its resulting directory, including the
       LICENSE.chromedriver file within
 
