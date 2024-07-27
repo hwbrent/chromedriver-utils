@@ -177,18 +177,16 @@ def download_chromedriver(url: str, dest_dir: str) -> str:
     return chromedriver_dest_path
 
 
-def amend_permission() -> None:
+def amend_permission(dest_dir: str) -> None:
     """
-    This function changes the permissions for `chromedriver` to allow it
-    to be executable.
+    Given the parent directory (`dest_dir`) of the `chromedriver` executable,
+    this function changes the permissions to allow it to be executable.
 
     It's the equivalent of entering this command into the terminal:
     `chmod +x ./chromedriver`
     """
-    root = os.path.dirname(__file__)
-
     # The path of the chromedriver executable
-    path = os.path.join(root, "chromedriver")
+    path = os.path.join(dest_dir, "chromedriver")
 
     # Change the permission of the file to be executable
     os.chmod(path, stat.S_IRWXU)
@@ -207,13 +205,12 @@ def download(dest_dir: str = None) -> str:
 
     And returns the path of the downloaded `chromedriver` executable
     """
+    dest_dir = dest_dir or os.path.dirname(__file__)
+
     version = get_chrome_version()
     url = get_chromedriver_download_url(version)
-    filepath = download_chromedriver(
-        url,
-        dest_dir or os.path.dirname(__file__),
-    )
-    amend_permission()
+    filepath = download_chromedriver(url, dest_dir)
+    amend_permission(dest_dir)
 
     return filepath
 
